@@ -10,6 +10,7 @@ const Item = styled.div`
 	width: 100%;
 	border-radius: 5px;
 	position: relative;
+	background-color: ${props => props.theme.white};
 	box-shadow: 0px 1px 5px 0px ${props => props.theme.lightGrey};
 	margin-bottom: ${props => props.theme.spacing(3)};
 	cursor: pointer;
@@ -55,13 +56,15 @@ const Title = styled.h6`
 	color: ${props => props.theme.black};
 	margin: 0 0 ${props => props.theme.spacing(1)};
 	height: 25px;
-	@media(min-width: ${props => props.theme.smQuery}) {
-		height: 50px;
-	}
+	font-size: 14px;
+	line-height: 1.2;
 	text-transform: uppercase;
 	&:hover {
 		text-decoration: none;
 		color: ${props => props.theme.black};
+	}
+	@media(min-width: ${props => props.theme.smQuery}) {
+		height: 50px;
 	}
 `
 const Price = styled.span`

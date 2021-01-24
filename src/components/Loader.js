@@ -76,7 +76,7 @@ const LoaderComponent = styled.progress`
     border-radius: 50%;
     width: 94px;
     height: 94px;
-    color: ${props => props.theme.primary};
+    color: ${props => props.theme[props.color]};
     background-color: transparent;
     font-size: 16px;
     overflow: hidden;
@@ -117,7 +117,7 @@ const Loader = (props) => {
 	return (
 		<LoaderContainer>
 			<Container>
-				<LoaderComponent theme={theme} />
+				<LoaderComponent theme={theme} color={props.color}/>
 			</Container>
 		</LoaderContainer>
 	)
@@ -125,9 +125,11 @@ const Loader = (props) => {
 
 
 Loader.defaultProps = {
+    color: 'primary'
 }
 
 Loader.propTypes = {
+    color: PropTypes.string
 }
 
 export default React.memo(Loader);

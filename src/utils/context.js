@@ -13,6 +13,7 @@ const useCommonContext = () => {
 		smQuery: '576px',
 		mdQuery: '768px',
 		lgQuery: '1024px',
+		fontFamily: 'Barlow Condensed',
 		spacing: (value) => {
 			return `${value * 8}px`
 		}

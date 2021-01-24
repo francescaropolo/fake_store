@@ -8,11 +8,16 @@ import Loader from '../components/Loader'
 import CommonContext from '../utils/context'
 
 const Intro = styled.section``
-const PageTitle = styled.h1``
-const PageDescription = styled.p``
+const PageTitle = styled.h1`
+    color: ${props => props.theme.black};
+`
+const PageDescription = styled.p`
+    margin-bottom: ${props => props.theme.spacing(3)};
+`
 const Filters = styled.section`
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     padding-bottom: ${props => props.theme.spacing(3)};
 `
 const FilterText = styled.span`
@@ -27,18 +32,46 @@ const FilterItem = styled.button`
     outline: none;
     cursor: pointer;
     color: ${props => props.isSelected ? props.theme.white : props.theme.black};
-    margin-right: ${props => props.theme.spacing(1)};
+    margin: ${props => props.theme.spacing(1)};
     transition: all .1s ease;
+    text-transform: uppercase;
+    font-size: 14px;
+	font-weight: 500;
 
     &:hover {
         border: 1px solid ${props => props.theme.primary};
+        color: ${props => props.isSelected ? props.theme.white : props.theme.primary};
     }
+
+    @media(min-width: ${props => props.theme.mdQuery}) {
+        margin: 0;
+		margin-right: ${props => props.theme.spacing(1)};
+	}
 `
 const ProductsList = styled.section`
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 16px;
+    padding: ${props => props.theme.spacing(3)} 0;
+    @media(min-width: ${props => props.theme.smQuery}) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+    @media(min-width: ${props => props.theme.mdQuery}) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+`
+const Divider = styled.div`
+	height: 2px;
+	width: 20px;
+	margin-bottom: ${props => props.theme.spacing(3)};
+	background-color: ${props => props.theme.secondary}
+`
+const LoaderContainer = styled.div`
+    height: 70vh;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
 `
 
 const Shop = props => {
@@ -120,9 +153,10 @@ const Shop = props => {
         <Container>
             <Intro>
                 <PageTitle theme={theme}>All products</PageTitle>
+                <Divider theme={theme} />
                 <PageDescription theme={theme}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ad ex quibusdam laboriosam inventore incidunt necessitatibus aspernatur quidem tempore ullam earum commodi repudiandae rerum, dolorum provident, tempora vitae magnam error!</PageDescription>
             </Intro>
-            {state.isLoading ? <Loader /> :
+            {state.isLoading ? <LoaderContainer><Loader /></LoaderContainer> :
                 <React.Fragment>
                     <Filters theme={theme}>
                         <FilterText theme={theme}>Filter :</FilterText>
@@ -133,7 +167,7 @@ const Shop = props => {
                             })}
                         </FiltersContainer>
                     </Filters>
-                    <ProductsList>
+                    <ProductsList theme={theme}>
                         {(state.filteredProducts || []).length > 0 ? state.filteredProducts.map((product, index) => {
                             return <ProductItem product={product} key={index} />
                         }) : 'No products found'}
