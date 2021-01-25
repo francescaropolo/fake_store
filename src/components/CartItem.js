@@ -3,29 +3,34 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CommonContext from '../utils/context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { Input } from 'rsuite';
 
 const Item = styled.li`
-	list-style: 0;
+	list-style: none;
 	width: 100%;
 	position: relative;
-	border-bottom: 1px solid ${props => props.theme.grey};
+	background-color: ${props => props.theme.white};
+	margin-bottom: ${props => props.theme.spacing(1)};
 	&:last-child {
 		border-bottom: 0;
 	}
 	text-decoration: none;
 `
 const LinkContainer = styled(Link)`
-	// width: 100%;
 	cursor: pointer;
 	text-decoration: none;
 	color: ${props => props.theme.black};
 	display: flex;
 	align-items: center;
 	justofy-content: flex-start;
-	text-decoration: none;
-	&:hover {
+	* {
+		text-decoration: none;
+	}
+	&:hover, &:focus, &:active {
 		text-decoration: none;
 		color: ${props => props.theme.black};
 	}
@@ -40,6 +45,7 @@ const ImgContainer = styled.div`
 `
 const InfoContainer = styled.section`
 	height: 100%;
+	width: 100%;
 	padding: ${props => props.theme.spacing(2)};
 	border-radius: 0 5px 5px 0;
 `
@@ -47,49 +53,110 @@ const Title = styled.h6`
 	font-size: 12px;
 	line-height: 12px;
 	margin: 0 0 ${props => props.theme.spacing(1)};
-	height: 25px;
+	padding-right: ${props => props.theme.spacing(1)};
+	color: ${props => props.theme.black};
 	@media(min-width: ${props => props.theme.smQuery}) {
-		height: 50px;
+		color: ${props => props.theme.black};
 	}
 	text-transform: uppercase;
-`
-const Quantity = styled.span`
-	font-size: 14px;
-	color: ${props => props.theme.grey}
+	&:hover, &:focus, &:active {
+		text-decoration: none;
+		color: ${props => props.theme.black};
+	}
 `
 const Price = styled.span`
 	font-size: 14px;
-	color: ${props => props.theme.grey}
+	color: ${props => props.theme.primary};
+	font-weight: 600;
+	&:hover, &:focus, &:active {
+		text-decoration: none;
+		color: ${props => props.theme.primary};
+	}
 `
 const Divider = styled.div`
 	height: 2px;
 	width: 20px;
-	margin: ${props => props.theme.spacing(1)} 0 ${props => props.theme.spacing(0.5)};
+	margin: ${props => props.theme.spacing(1)} 0 ${props => props.theme.spacing(6)};
 	background-color: ${props => props.theme.secondary}
 `
-const RemoveButton = styled.button`
-	width: 35px;
-	height: 35px;
-	border-radius: 20px;
-	position: absolute;
-	bottom: ${props => props.theme.spacing(2)};
-	right: ${props => props.theme.spacing(2)};
-
+const PriceContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `
+const QuantityActions = styled.div`
+	display: flex;
+	align-items: center;
+`
+const QuantityButton = styled.button`
+	background-color: transparent;
+	color: ${props => props.theme.black};
+	border: none;
+	outline: none;
+	transition: all .1s ease;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50px;
+
+	&:hover {
+		background-color: ${props => props.theme.lightGrey}66;
+	}
+`
+const QuantityInput = styled(Input)`
+	width: 50px;
+	margin: 0 ${props => props.theme.spacing(1)};
+	&:hover {
+		text-decoration: none;
+	}
+`
+const CloseButton = styled(QuantityButton)`
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 10px;
+	right: 10px;
+`
+
 const CartItem = props => {
 	const context = useContext(CommonContext);
 	const { theme, cartItems, setCartItems } = context;
 	const { id, title, description, category, price, image, quantity } = props.item;
 
-	const handleRemoveItem = (ev) => {
-		ev.stopPropagation();
+	const getShorterTitle = (str) => {
+		const strArr = str.split(" ");
+		return strArr.slice(0, 4).join(" ")
+	}
 
+	const handleAdd = (ev) => {
+		ev.stopPropagation();
 		const updateCartItems = [...cartItems];
-		const myProduct = {...props.item};
+		updateCartItems.push(props.item);
+		setCartItems(updateCartItems)
+	}
+
+	const handleRemove = (ev) => {
+		ev.stopPropagation();
+		const updateCartItems = [...cartItems];
+		const myProduct = { ...props.item };
 		delete myProduct.quantity;
 		const productIndex = updateCartItems.indexOf(myProduct);
 		updateCartItems.splice(productIndex, 1);
 		setCartItems(updateCartItems)
+	}
+
+	const handleChangeQuantity = (value) => {
+		const updateCartItems = [...cartItems];
+		const otherItems = updateCartItems.filter(item => item.id !== id);
+
+		for(let i = 0; i < value; i++) {
+			otherItems.push(props.item)
+		}
+		
+		setCartItems(otherItems)
 	}
 
 	return (
@@ -97,15 +164,19 @@ const CartItem = props => {
 			<LinkContainer to={"/shop/product/" + id}>
 				<ImgContainer bg={image} theme={theme}/>
 				<InfoContainer theme={theme}>
-					<Title theme={theme}>{title}</Title>
-					<Quantity theme={theme}>Quantity: {quantity}</Quantity>
+					<Title theme={theme}>{getShorterTitle(title)}</Title>
 					<Divider theme={theme}/>
-					<Price theme={theme}>{price}€</Price>
+					<PriceContainer>
+						<QuantityActions theme={theme}>
+							<QuantityButton theme={theme} onClick={handleRemove}><FontAwesomeIcon icon={faMinus} size="xs" /></QuantityButton>
+							<QuantityInput theme={theme} placeholder="Quantity" value={quantity} onChange={handleChangeQuantity} />
+							<QuantityButton theme={theme} onClick={handleAdd}><FontAwesomeIcon icon={faPlus} size="xs" /></QuantityButton>
+						</QuantityActions>
+						<Price theme={theme}>{price}€</Price>
+					</PriceContainer>
 				</InfoContainer>
 			</LinkContainer>
-			<RemoveButton onClick={handleRemoveItem} theme={theme}>
-				<FontAwesomeIcon icon={faTrashAlt} />
-			</RemoveButton>
+			<CloseButton theme={theme} onClick={() => handleChangeQuantity(0)}><FontAwesomeIcon icon={faTimes} size="xs" /></CloseButton>
 		</Item>
 	)
 }

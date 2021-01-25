@@ -8,17 +8,19 @@ import { Link } from 'react-router-dom';
 
 const Item = styled.div`
 	width: 100%;
-	border-radius: 5px;
 	position: relative;
 	background-color: ${props => props.theme.white};
-	box-shadow: 0px 1px 5px 0px ${props => props.theme.lightGrey};
+	border: 1px solid ${props => props.theme.lightGrey}1A;
 	margin-bottom: ${props => props.theme.spacing(3)};
 	cursor: pointer;
 	text-decoration: none;
 	color: ${props => props.theme.black};
 
 	button {
-		opacity: 0;
+		opacity: 1;
+		@media(min-width: ${props => props.theme.smQuery}) {
+			opacity: 0;
+		}
 	}
 
 	&:hover {
@@ -49,37 +51,37 @@ const ImgContainer = styled.div`
 `
 const InfoContainer = styled.section`
 	padding: ${props => props.theme.spacing(2)};
-	background-color: ${props => props.theme.secondary}1A;
-	border-radius: 0 0 5px 5px;
+`
+const Category = styled.p`
+	color: ${props => props.theme.grey};
+	margin: 0 0 ${props => props.theme.spacing(1)};
+	font-size: 12px;
+	line-height: 1;
+	text-transform: capitalize;
+	&:hover {
+		text-decoration: none;
+		color: ${props => props.theme.grey};
+	}
 `
 const Title = styled.h6`
 	color: ${props => props.theme.black};
 	margin: 0 0 ${props => props.theme.spacing(1)};
-	height: 25px;
 	font-size: 14px;
 	line-height: 1.2;
-	text-transform: uppercase;
+	font-weight: 500;
 	&:hover {
 		text-decoration: none;
 		color: ${props => props.theme.black};
-	}
-	@media(min-width: ${props => props.theme.smQuery}) {
-		height: 50px;
 	}
 `
 const Price = styled.span`
 	font-size: 14px;
-	color: ${props => props.theme.grey};
+	color: ${props => props.theme.secondary};
+	font-weight: 600;
 	&:hover {
 		text-decoration: none;
-		color: ${props => props.theme.black};
+		color: ${props => props.theme.secondary};
 	}
-`
-const Divider = styled.div`
-	height: 2px;
-	width: 20px;
-	margin: ${props => props.theme.spacing(1)} 0 ${props => props.theme.spacing(0.5)};
-	background-color: ${props => props.theme.secondary}
 `
 const CartButton = styled.button`
 	width: 35px;
@@ -117,14 +119,19 @@ const ProductItem = props => {
 		setShowCart(true);
 	}
 
+	const getShorterTitle = (str) => {
+		const strArr = str.split(" ");
+		return strArr.slice(0, 4).join(" ")
+	}
+
 	return (
 		<Item theme={theme}>
 			<CartButton theme={theme} onClick={handleAddItem}><FontAwesomeIcon icon={faShoppingBag} /></CartButton>
 			<ItemContainer theme={theme} to={"/shop/product/" + id}>
 				<ImgContainer bg={image} theme={theme}/>
 				<InfoContainer theme={theme}>
-					<Title theme={theme}>{title}</Title>
-					<Divider theme={theme}/>
+					<Category theme={theme}>{category}</Category>
+					<Title theme={theme}>{getShorterTitle(title)}</Title>
 					<Price theme={theme}>{price}€</Price>
 				</InfoContainer>
 			</ItemContainer>

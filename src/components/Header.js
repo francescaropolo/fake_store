@@ -6,35 +6,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { Drawer, Dropdown } from 'rsuite';
+import { Drawer, Dropdown, Modal } from 'rsuite';
 import CartItem from '../components/CartItem';
 import { useMergeState } from 'react-hooks-lib';
+import cartBg from '../images/cartBg.svg'
 
 const Logo = styled(Link)`
-	color: ${props => props.theme.primary};
+	color: ${props => props.theme.black};
 	text-decoration: none;
 	margin: 0;
 	margin-right: auto;
-	font-size: 2rem;
+	font-size: 1.2rem;
 	font-weight: 600;
 	&:hover {
 		text-decoration: none;
-		color: ${props => props.theme.primary};
-	}
-
-	@media(min-width: ${props => props.theme.smQuery}) {
-		margin-right: 0;
+		color: ${props => props.theme.black};
 	}
 `
 const Dot = styled.div`
-	background-color: ${props => props.theme.secondary};
+	background-color: ${props => props.theme.primary};
 	display: inline-block;
-	height: 10px;
-	width: 10px;
+	height: 5px;
+	width: 5px;
 	border-radius: 20px;
+	margin-left: ${props => props.theme.spacing(0.5)};
 	&:hover {
 		text-decoration: none;
-		color: ${props => props.theme.secondary};
+		color: ${props => props.theme.primary};
 	}
 `
 const Button = styled.button`
@@ -73,6 +71,13 @@ const Badge = styled.span`
 const CartList = styled.ul`
 	padding: 0;
 	margin: 0;
+	height: 100%;
+	display: ${props => props.isEmpty ? 'flex' : 'inherit'};
+	padding: 0 ${props => props.theme.spacing(2)};
+	background: url(${cartBg}) center center no-repeat;
+	background-size: cover;
+	align-items: center;
+	justify-content: center;
 `
 const Menu = styled.ul`
 	padding: 0;
@@ -89,8 +94,7 @@ const MenuItem = styled(Link)`
 	text-decoration: none;
 	border-bottom: 2px solid transparent;
 	transition: all .2s ease;
-	font-size: 18px;
-	text-transform: uppercase;
+	font-size: 12px;
 	&:hover, &:active, &:focus, &:visited {
 		text-decoration: none;
 		color: ${props => props.theme.black};
@@ -108,12 +112,9 @@ const AppBar = styled.header`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	padding: ${props => props.theme.spacing(2)} ${props => props.theme.spacing(3.5)};
+	padding: ${props => props.theme.spacing(2)} ${props => props.theme.spacing(6)};
 	& * {
 		font-family: ${props => props.theme.fontFamily};
-	}
-	@media(min-width: ${props => props.theme.smQuery}) {
-		justify-content: space-between;
 	}
 `
 const DrawerTitle = styled.span`
@@ -121,6 +122,11 @@ const DrawerTitle = styled.span`
 	color: ${props => props.theme.black};
 	font-size: 28px;
 	line-height: 42px;
+`
+const ModalTitle = styled(DrawerTitle)`
+	font-family: ${props => props.theme.fontFamily};
+	color: ${props => props.theme.secondary};
+	font-size: 18px;
 `
 const Divider = styled.div`
 	height: 2px;
@@ -142,30 +148,60 @@ const InfoContainer = styled.div`
 	text-align: center;	
 `
 const Total = styled(DrawerInfo)`
-	// padding-top: ${props => props.theme.spacing(2)};
 	font-weight: 600;
 `
 const Text = styled.p`
 	font-family: ${props => props.theme.fontFamily};
 	font-size: 14px;
+	span {
+		color: ${props => props.theme.primary};
+		font-style: italic;
+		font-weight: 600;
+	}
 `
 const Cta = styled.button`
-	font-family: ${props => props.theme.fontFamily};
-	background: ${props => props.theme.white};
+	background: ${props => props.theme.secondary}E6;
 	padding: 8px 16px;
-	border: 1px solid ${props => props.theme.secondary};
 	border-radius: 50px;
 	outline: none;
 	cursor: pointer;
-	color: ${props => props.theme.secondary};
+	color: ${props => props.theme.white};
 	transition: all .1s ease;
-	font-size: 16px;
+	text-decoration: none;
+	font-size: 12px;
 	text-transform: uppercase;
 	font-weight: 500;
 
     &:hover {
-        background: ${props => props.theme.secondary};
+		background: ${props => props.theme.secondary};
 		color: ${props => props.theme.white};
+		text-decoration: none;
+    }
+	font-family: ${props => props.theme.fontFamily};
+`
+const EmptyCart = styled.p`
+	font-size: 20px;
+	padding: 0 ${props => props.theme.spacing(2)};
+	text-align: center;
+	font-family: ${props => props.theme.fontFamily};
+	span {
+		color: ${props => props.theme.primary};
+		font-weight: 600;
+	}
+`
+const DrawerBody = styled(Drawer.Body)`
+	margin-left: 0;
+	margin-right: 0;
+`
+const ModalBody = styled(Modal.Body)`
+	background: url(${cartBg}) 0 0 no-repeat;
+	background-size: cover;
+	height: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	p {
+		font-size: 20px;
 	}
 `
 
@@ -176,7 +212,8 @@ const Header = props => {
 		items: [],
 		total: 0,
 		showMenu: false,
-		isMobile: false
+		isMobile: false,
+		openModal: false
 	})
 
 	useEffect(() => {
@@ -212,9 +249,14 @@ const Header = props => {
 		})
 	}
 
+	const handleCheckout = (ev) => {
+		setShowCart(false)
+		set({openModal : true})
+	}
+
 	return (
 		<AppBar theme={theme}>
-			<Logo theme={theme} to="/">FAKE Store <Dot theme={theme} /></Logo>
+			<Logo theme={theme} to="/">FakeStore<Dot theme={theme} /></Logo>
 			{!state.isMobile ? <Menu theme={theme}>
 				<li><MenuItem theme={theme} to="/">Home</MenuItem></li>
 				<li><MenuItem theme={theme} to="/shop">Shop</MenuItem></li>
@@ -242,13 +284,13 @@ const Header = props => {
 						<Divider theme={theme} width="20px"/>
 					</Drawer.Title>
 				</Drawer.Header>
-				<Drawer.Body>
-					<CartList>
+				<DrawerBody>
+					<CartList theme={theme} isEmpty={state.items.length === 0}>
 						{state.items.length > 0 ? state.items.map((item, index) => {
 							return <CartItem key={index} item={item} />
-						}) : "Your cart is empty"}
+						}) : <EmptyCart theme={theme}>Ups, it seems like your <span>Fake</span> cart is empty!</EmptyCart>}
 					</CartList>
-				</Drawer.Body>
+				</DrawerBody>
 				<Drawer.Footer>
 					{state.items.length > 0 && <InfoContainer>
 						<DrawerInfo theme={theme}>
@@ -264,10 +306,18 @@ const Header = props => {
 							<Text theme={theme}>Total</Text>
 							<Text theme={theme}>{(state.total).toFixed(2)}€</Text>
 						</Total>
-						<Cta theme={theme}>Checkout</Cta>
+						<Cta theme={theme} onClick={handleCheckout}>Checkout</Cta>
 					</InfoContainer>}
 				</Drawer.Footer>
 			</Drawer>
+			<Modal show={state.openModal} onHide={() => set({openModal: false})}>
+				<Modal.Header>
+					<Modal.Title><ModalTitle theme={theme}>That's all folks!</ModalTitle></Modal.Title>
+				</Modal.Header>
+				<ModalBody>
+					<Text theme={theme}>We hope you enjoyed your <span>Fake</span> shopping experience.</Text>
+				</ModalBody>
+			</Modal>
 		</AppBar>
 	)
 }

@@ -4,8 +4,8 @@ const useCommonContext = () => {
 	const [cartItems, setCartItems] = useState([]);
 	const [showCart, setShowCart] = useState(false);
 	const theme = {
-		primary: '#FF9000',
-		secondary: '#3B60E4',
+		secondary: '#FF9000',
+		primary: '#3B60E4',
 		lightGrey: '#E9E9E9',
 		grey: '#666',
 		black: '#363537',
@@ -13,7 +13,7 @@ const useCommonContext = () => {
 		smQuery: '576px',
 		mdQuery: '768px',
 		lgQuery: '1024px',
-		fontFamily: 'Barlow Condensed',
+		fontFamily: 'Montserrat',
 		spacing: (value) => {
 			return `${value * 8}px`
 		}

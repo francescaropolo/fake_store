@@ -17,11 +17,8 @@ const PageDescription = styled.p`
 const Filters = styled.section`
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: center;
     padding-bottom: ${props => props.theme.spacing(3)};
-`
-const FilterText = styled.span`
-    margin-right: ${props => props.theme.spacing(1)};
 `
 const FiltersContainer = styled.div``
 const FilterItem = styled.button`
@@ -34,8 +31,8 @@ const FilterItem = styled.button`
     color: ${props => props.isSelected ? props.theme.white : props.theme.black};
     margin: ${props => props.theme.spacing(1)};
     transition: all .1s ease;
-    text-transform: uppercase;
-    font-size: 14px;
+    font-size: 12px;
+	text-transform: uppercase;
 	font-weight: 500;
 
     &:hover {
@@ -72,6 +69,12 @@ const LoaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+`
+const TotalItems = styled.p`
+    font-weight: 600;
+    span {
+        color: ${props => props.theme.primary}
+    }
 `
 
 const Shop = props => {
@@ -150,7 +153,7 @@ const Shop = props => {
     }
 
     return (
-        <Container>
+        <Container withBg={true}>
             <Intro>
                 <PageTitle theme={theme}>All products</PageTitle>
                 <Divider theme={theme} />
@@ -159,7 +162,6 @@ const Shop = props => {
             {state.isLoading ? <LoaderContainer><Loader /></LoaderContainer> :
                 <React.Fragment>
                     <Filters theme={theme}>
-                        <FilterText theme={theme}>Filter :</FilterText>
                         <FiltersContainer>
                             <FilterItem theme={theme} onClick={(ev => handleSelectCategory(ev, 'all'))} isSelected={state.selectedCategory === 'all'}>Show all</FilterItem>
                             {(state.categories || []).map((category, index) => {
@@ -167,6 +169,7 @@ const Shop = props => {
                             })}
                         </FiltersContainer>
                     </Filters>
+                    <TotalItems theme={theme}><span>{state.filteredProducts.length}</span> Products found</TotalItems>
                     <ProductsList theme={theme}>
                         {(state.filteredProducts || []).length > 0 ? state.filteredProducts.map((product, index) => {
                             return <ProductItem product={product} key={index} />

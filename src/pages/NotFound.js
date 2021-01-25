@@ -9,13 +9,14 @@ import { Link } from 'react-router-dom'
 const NotFoundContainer = styled.div`
 	font-family: ${props => props.theme.fontFamily};
 	height: 100%;
+	width: 100%;
 	background: url(${props => props.bgImg}) center center no-repeat;
-	background-size: cover;
+	background-size: contain;
 	display: flex;
 	justify-content: center;
-	padding-top: ${props => props.theme.spacing(15)};
+	margin-top: ${props => props.theme.spacing(15)};
 	@media(min-width: ${props => props.theme.smQuery}) {
-		background-size: contain;
+		background-size: cover;
 	}
 `
 
@@ -23,23 +24,26 @@ const NotFoundBody = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 70vh;
 `
 const Title = styled.h1`
-	font-size: 150px;
+	font-size: 50px;
 	line-height: 1;
 	color: ${props => props.theme.secondary};
 
 	@media(min-width: ${props => props.theme.smQuery}) {
-		font-size: 250px;
+		font-size: 150px;
 	}
 `
 const Subtitle = styled.p`
-	font-size: 30px;
+	font-size: 15px;
 	text-transform: uppercase;
 	color: ${props => props.theme.secondary};
 	margin-bottom: ${props => props.theme.spacing(3)};
 	@media(min-width: ${props => props.theme.smQuery}) {
-		font-size: 50px;
+		font-size: 30px;
 	}
 `
 const Divider = styled.div`
@@ -58,7 +62,7 @@ const Cta = styled(Link)`
 	color: ${props => props.theme.primary};
 	transition: all .1s ease;
 	text-decoration: none;
-	font-size: 18px;
+	font-size: 12px;
 	text-transform: uppercase;
 	font-weight: 500;
 
@@ -74,16 +78,14 @@ const NotFound = props => {
 	const { theme } = context;
 
 	return (
-		// <Container>
-			<NotFoundContainer bgImg={notFound} theme={theme}>
-				<NotFoundBody>
-					<Title theme={theme}>404</Title>
-					<Divider theme={theme} />
-					<Subtitle theme={theme}>Page not found</Subtitle>
-					<Cta theme={theme} to="/">Return to homepage</Cta>
-				</NotFoundBody>
-			</NotFoundContainer>
-		// </Container>
+		<NotFoundContainer bgImg={notFound} theme={theme}>
+			<NotFoundBody>
+				<Title theme={theme}>404</Title>
+				<Divider theme={theme} />
+				<Subtitle theme={theme}>Page not found</Subtitle>
+				<Cta theme={theme} to="/">Return to homepage</Cta>
+			</NotFoundBody>
+		</NotFoundContainer>
 	)
 }
 

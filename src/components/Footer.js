@@ -2,12 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CommonContext from '../utils/context';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSmileWink } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
 
 const FooterContainer = styled.footer`
-	background-color: ${props => props.theme.black};
+	background-color: ${props => props.theme.white};
+	border-top: 1px solid ${props => props.theme.primary};
 	width: 100%;
 	display: flex;
 	align-item: center;
@@ -19,7 +17,13 @@ const FooterContainer = styled.footer`
 `
 const FooterText = styled.p`
 	margin: 0;
-	color: ${props => props.theme.white};
+	color: ${props => props.theme.black};
+`
+const Strong = styled.span`
+	font-weight: 500;
+`
+const Highlight = styled(Strong)`
+	color: ${props => props.theme.primary};
 `
 
 const Footer = props => {
@@ -28,7 +32,7 @@ const Footer = props => {
 	
 	return (
 		<FooterContainer theme={theme}>
-			<FooterText theme={theme}>&copy; FAKE Store <FontAwesomeIcon icon={faSmileWink} /></FooterText>
+			<FooterText theme={theme}>&copy; <Strong>FakeStore</Strong>. Designed by <Highlight theme={theme}>Francesca Ropolo</Highlight></FooterText>
 		</FooterContainer>
 	)
 }

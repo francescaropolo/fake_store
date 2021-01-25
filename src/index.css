@@ -3,9 +3,10 @@ html, body, #root {
 }
 body {
 	margin: 0;
-	font-family: 'Barlow Condensed', sans-serif;
+	font-family: 'Montserrat', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	box-sizing: border-box;
 }
 
 code {

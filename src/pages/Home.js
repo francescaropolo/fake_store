@@ -39,40 +39,39 @@ const HeroText = styled.div`
 const Highlight = styled.span`
 `
 const Title = styled.h1`
-	font-size: 3rem;
+	font-size: 1.8rem;
 	line-height: 1;
 	margin-bottom: ${props => props.theme.spacing(3)};
 	@media(min-width: ${props => props.theme.lgQuery}) {
-		font-size: 5rem;
+		font-size: 2.8rem;
 	}
 
 	${Highlight} {
 		color: ${props => props.theme.primary};
 	}
 `
-const Description = styled.p`
+const Subtitle = styled.p`
 	margin-bottom: ${props => props.theme.spacing(3)};
-	font-size: 16px;
+	font-size: 14px;
 	@media(min-width: ${props => props.theme.lgQuery}) {
-		font-size: 24px;
+		font-size: 14px;
 	}
 `
 const Cta = styled(Link)`
-	background: ${props => props.theme.white};
+	background: ${props => props.theme.secondary}E6;
 	padding: 8px 16px;
-	border: 1px solid ${props => props.theme.secondary};
 	border-radius: 50px;
 	outline: none;
 	cursor: pointer;
-	color: ${props => props.theme.secondary};
+	color: ${props => props.theme.white};
 	transition: all .1s ease;
 	text-decoration: none;
-	font-size: 18px;
+	font-size: 12px;
 	text-transform: uppercase;
 	font-weight: 500;
 
     &:hover {
-        background: ${props => props.theme.secondary};
+		background: ${props => props.theme.secondary};
 		color: ${props => props.theme.white};
 		text-decoration: none;
     }
@@ -89,8 +88,7 @@ const HeroImg = styled.img`
 	height: auto;
 	transition: all .8s ease-in-out;
 `
-const NewArrivalsContainer = styled.section`
-	background-color: ${props => props.theme.primary};
+const TrendingItemsContainer = styled.section`
 	padding: ${props => props.theme.spacing(4)} ${props => props.theme.spacing(5)};
 `
 const Divider = styled.div`
@@ -112,8 +110,8 @@ const SectionTitle = styled.h3`
 const Dot = styled.div`
 	background-color: ${props => props.theme.secondary};
 	display: inline-block;
-	height: 15px;
-	width: 15px;
+	height: 8px;
+	width: 8px;
 	border-radius: 20px;
 	&:hover {
 		text-decoration: none;
@@ -126,20 +124,20 @@ const Home = props => {
 	const { theme, cartItems, setCartItems, setShowCart } = context;
 	const {state, set} = useMergeState({
 		isLoading: true,
-		newArrivals: [],
+		trendingItems: [],
 		error: null
 	})
 
 	useEffect(() => {
-		getNewArrivals();
+		getTrendingItems();
 	}, [])
 
-	const getNewArrivals = () => {
+	const getTrendingItems = () => {
 		fetch('https://fakestoreapi.com/products?limit=5')
 		.then(res => res.json())
 		.then(json => {
 			set({
-				newArrivals: json,
+				trendingItems: json,
 				isLoading: false
 			})
 		})
@@ -155,25 +153,25 @@ const Home = props => {
 		<React.Fragment>
 			<HeroContainer theme={theme}>
 				<HeroText theme={theme}>
-					<Title theme={theme}>Being <Highlight>FAKE</Highlight> has never been easier <Dot theme={theme}/></Title>
-					<Description theme={theme}>A lot of products you may think you should buy, but you can't.</Description>
+					<Title theme={theme}>Being <Highlight>Fake</Highlight> has never been easier <Dot theme={theme}/></Title>
+					<Subtitle theme={theme}>Discover the fake trending fashion, a lot of products you may think you should buy... but you can't.</Subtitle>
 					<Cta theme={theme} to="/shop">Shop now</Cta>
 				</HeroText>
 				<HeroImgContainer theme={theme}>
 					<HeroImg src={hero}/>
 				</HeroImgContainer>
 			</HeroContainer>
-			<NewArrivalsContainer theme={theme}>
+			<TrendingItemsContainer theme={theme}>
 				<Container marginTop={0}>
-					<SectionTitle theme={theme}>New arrivals</SectionTitle>
+					<SectionTitle theme={theme}>Trending items</SectionTitle>
 					<Divider theme={theme}/>
 					{state.isLoading ? <Loader color="white" /> : <ProductsList theme={theme}>
-						{state.newArrivals.map((product, index) => {
+						{state.trendingItems.map((product, index) => {
 							return <ProductItem product={product} key={index} />
 						})}
 					</ProductsList>}
 				</Container>
-			</NewArrivalsContainer>
+			</TrendingItemsContainer>
 		</React.Fragment>
 	)
 }
