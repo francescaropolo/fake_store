@@ -155,7 +155,7 @@ const Home = props => {
 	}
 
 	return (
-		<React.Fragment>
+		<div>
 			<HeroContainer theme={theme}>
 				<HeroText theme={theme}>
 					<Title theme={theme}>Being <Highlight>Fake</Highlight> has never been easier <Dot theme={theme}/></Title>
@@ -177,7 +177,7 @@ const Home = props => {
 					</ProductsList>}
 				</Container>
 			</TrendingItemsContainer>
-		</React.Fragment>
+		</div>
 	)
 }
 

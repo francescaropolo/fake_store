@@ -19,17 +19,22 @@ const ProductContainer = styled.section`
 	display: grid;
 	grid-template-columns: 1fr;
 	row-gap: ${props => props.theme.spacing(4)};
-	grid-template-row: repeat(2, auto);
+	grid-template-rows: repeat(2, auto);
 	@media(min-width: ${props => props.theme.smQuery}) {
 		grid-template-columns: repeat(2, 1fr);
 		column-gap: ${props => props.theme.spacing(8)};
-		grid-template-row: auto;
+		grid-template-rows: 450px;
 	}
 `
-const ProductImageContainer = styled.div``
+const ProductImageContainer = styled.div`
+	text-align: center;
+	height: 100%;
+	max-height: 450px;
+`
 const Img = styled.img`
 	max-width: 100%;
 	height: auto;
+	max-height: 100%;
 `
 const ProductDescription = styled.section``
 const Title = styled.h1`
@@ -162,7 +167,7 @@ const Text = styled.p`
 	}
 `
 const LoaderContainer = styled.div`
-    height: 70vh;
+    height: 75vh;
     width: 100%;
     display: flex;
     align-items: center;

@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 function App() {
 	return (
 		<ProvideContext>
-			<Router>
+			<Router basename="/fake_store">
 				<ScrollToTop />
 				<Wrapper>
 					<Header />

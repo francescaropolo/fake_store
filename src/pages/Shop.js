@@ -65,7 +65,7 @@ const Divider = styled.div`
 	background-color: ${props => props.theme.secondary}
 `
 const LoaderContainer = styled.div`
-    height: 70vh;
+    height: 60vh;
     width: 100%;
     display: flex;
     align-items: center;
@@ -165,7 +165,7 @@ const Shop = props => {
             <section>
                 <PageTitle theme={theme}>All products</PageTitle>
                 <Divider theme={theme} />
-                <PageDescription theme={theme}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ad ex quibusdam laboriosam inventore incidunt necessitatibus aspernatur quidem tempore ullam earum commodi repudiandae rerum, dolorum provident, tempora vitae magnam error!</PageDescription>
+                <PageDescription theme={theme}>We are proud to present to you: the best, the biggest, the most colorful... oh yes! Simply all of our Fake products. The most popular items that everyone thinks they want to buy, but they can't. If you don't know what to get, you'll find the answer here: nothing. Enjoy!</PageDescription>
             </section>
             {state.isLoading ? <LoaderContainer><Loader /></LoaderContainer> :
                 <React.Fragment>

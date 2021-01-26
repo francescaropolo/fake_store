@@ -131,7 +131,8 @@ const DrawerTitle = styled.span`
 const ModalTitle = styled(DrawerTitle)`
 	font-family: ${props => props.theme.fontFamily};
 	color: ${props => props.theme.secondary};
-	font-size: 18px;
+	font-size: 1.5rem;
+	font-weight: 600;
 `
 const Divider = styled.div`
 	height: 2px;
@@ -202,6 +203,7 @@ const ModalBody = styled(Modal.Body)`
 	background-size: cover;
 	height: 300px;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	p {
@@ -320,9 +322,10 @@ const Header = props => {
 			</Drawer>
 			<CustomModal show={state.openModal} full={!window.matchMedia(`(min-width: ${theme.smQuery})`).matches} onHide={() => set({openModal: false})}>
 				<Modal.Header>
-					<Modal.Title><ModalTitle theme={theme}>That's all folks!</ModalTitle></Modal.Title>
+					<Modal.Title></Modal.Title>
 				</Modal.Header>
 				<ModalBody>
+					<ModalTitle theme={theme}>That's all folks!</ModalTitle>
 					<Text theme={theme}>We hope you enjoyed your <span>Fake</span> shopping experience.</Text>
 				</ModalBody>
 			</CustomModal>

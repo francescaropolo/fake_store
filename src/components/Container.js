@@ -6,12 +6,16 @@ import bg from '../images/bg.svg'
 
 const PageContainer = styled.div`
 	width: 100%;
-	max-width: 1020px;
-	margin: 0 auto;
 	height: 100%;
 	background: ${props => props.withBg ? `url('${bg}') center center no-repeat` : 'transparent'};
 	background-size: cover;
 	background-attachment: fixed;
+`
+const Paper = styled.div`
+	width: 100%;
+	max-width: 1020px;
+	margin: 0 auto;
+	height: 100%;
 	padding: ${props => props.theme.spacing(2)} ${props => props.theme.spacing(4)};
 	margin-top: ${props => props.theme.spacing(props.marginTop)};
 	& * {
@@ -24,8 +28,10 @@ const Container = props => {
 	const { theme } = context;
 
 	return (
-		<PageContainer theme={theme} marginTop={props.marginTop} withBg={props.withBg}>
-			{props.children}
+		<PageContainer withBg={props.withBg}>
+			<Paper theme={theme} marginTop={props.marginTop}>
+				{props.children}
+			</Paper>
 		</PageContainer>
 	)
 }
