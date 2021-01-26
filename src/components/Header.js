@@ -112,9 +112,14 @@ const AppBar = styled.header`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	padding: ${props => props.theme.spacing(2)} ${props => props.theme.spacing(6)};
+	padding: ${props => props.theme.spacing(2)} ${props => props.theme.spacing(3)};
+
 	& * {
 		font-family: ${props => props.theme.fontFamily};
+	}
+
+	@media(min-width: ${props => props.theme.smQuery}) {
+		padding: ${props => props.theme.spacing(2)} ${props => props.theme.spacing(6)};
 	}
 `
 const DrawerTitle = styled.span`

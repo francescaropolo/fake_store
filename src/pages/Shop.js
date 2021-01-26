@@ -8,8 +8,8 @@ import Loader from '../components/Loader'
 import CommonContext from '../utils/context'
 import CustomBreadcrumb, { BreadcrumbItem } from '../components/Breadcrumb'
 import { Link } from 'react-router-dom'
+import ErrorMessage from '../components/ErrorMessage'
 
-const Intro = styled.section``
 const PageTitle = styled.h1`
     color: ${props => props.theme.black};
 `
@@ -22,7 +22,6 @@ const Filters = styled.section`
     justify-content: center;
     padding-bottom: ${props => props.theme.spacing(3)};
 `
-const FiltersContainer = styled.div``
 const FilterItem = styled.button`
     background: ${props => props.isSelected ? props.theme.primary : props.theme.white};
     padding: 8px 16px;
@@ -151,7 +150,10 @@ const Shop = props => {
         }
         
         set({ filteredProducts: updatedProducts })
+    }
 
+    if (state.error) {
+        return <Container><ErrorMessage error={state.error} /></Container>
     }
 
     return (
@@ -160,20 +162,20 @@ const Shop = props => {
                 <BreadcrumbItem componentClass={Link} theme={theme} to="/">Home</BreadcrumbItem>
                 <BreadcrumbItem active theme={theme}>Shop</BreadcrumbItem>
             </CustomBreadcrumb>
-            <Intro>
+            <section>
                 <PageTitle theme={theme}>All products</PageTitle>
                 <Divider theme={theme} />
                 <PageDescription theme={theme}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ad ex quibusdam laboriosam inventore incidunt necessitatibus aspernatur quidem tempore ullam earum commodi repudiandae rerum, dolorum provident, tempora vitae magnam error!</PageDescription>
-            </Intro>
+            </section>
             {state.isLoading ? <LoaderContainer><Loader /></LoaderContainer> :
                 <React.Fragment>
                     <Filters theme={theme}>
-                        <FiltersContainer>
+                        <div>
                             <FilterItem theme={theme} onClick={(ev => handleSelectCategory(ev, 'all'))} isSelected={state.selectedCategory === 'all'}>Show all</FilterItem>
                             {(state.categories || []).map((category, index) => {
                                 return <FilterItem theme={theme} key={index} onClick={(ev => handleSelectCategory(ev, category))} isSelected={state.selectedCategory === category}>{category}</FilterItem>
                             })}
-                        </FiltersContainer>
+                        </div>
                     </Filters>
                     <TotalItems theme={theme}><span>{state.filteredProducts.length}</span> Products found</TotalItems>
                     <ProductsList theme={theme}>

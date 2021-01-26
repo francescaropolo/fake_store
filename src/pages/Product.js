@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import CommonContext from '../utils/context'
 import { Input } from 'rsuite'
 import CustomBreadcrumb, { BreadcrumbItem } from '../components/Breadcrumb'
+import ErrorMessage from '../components/ErrorMessage'
 
 const ProductContainer = styled.section`
 	padding-top: ${props => props.theme.spacing(4)};
@@ -267,6 +268,10 @@ const Product = props => {
 
 	const getShorterDescription = (str) => {
 		return str.substring(0, 130) + '...'
+	}
+
+	if (state.error) {
+		return <Container><ErrorMessage error={state.error} /></Container>
 	}
 
 	return (

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useMergeState } from 'react-hooks-lib';
 import ProductItem from '../components/ProductItem';
 import Loader from '../components/Loader';
+import ErrorMessage from '../components/ErrorMessage';
 
 const HeroContainer = styled.section`
 	margin-top: ${props => props.theme.spacing(12)};
@@ -89,7 +90,7 @@ const HeroImg = styled.img`
 	transition: all .8s ease-in-out;
 `
 const TrendingItemsContainer = styled.section`
-	padding: ${props => props.theme.spacing(4)} ${props => props.theme.spacing(5)};
+	padding: ${props => props.theme.spacing(4)} 0;
 `
 const Divider = styled.div`
 	height: 2px;
@@ -149,6 +150,10 @@ const Home = props => {
 		})
 	}
 
+	if(state.error) {
+		return <Container><ErrorMessage error={state.error} /></Container>
+	}
+
 	return (
 		<React.Fragment>
 			<HeroContainer theme={theme}>
@@ -165,7 +170,7 @@ const Home = props => {
 				<Container marginTop={0}>
 					<SectionTitle theme={theme}>Trending items</SectionTitle>
 					<Divider theme={theme}/>
-					{state.isLoading ? <Loader color="white" /> : <ProductsList theme={theme}>
+					{state.isLoading ? <Loader color="secondary" /> : <ProductsList theme={theme}>
 						{state.trendingItems.map((product, index) => {
 							return <ProductItem product={product} key={index} />
 						})}

@@ -95,7 +95,7 @@ const LoaderComponent = styled.progress`
         display: block;
         box-sizing: border-box;
         margin-bottom: 8px;
-        border: solid 2px transparent;
+        border: solid 8px transparent;
         border-top-color: currentColor;
         border-radius: 50%;
         width: 100% !important;

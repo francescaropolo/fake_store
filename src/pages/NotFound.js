@@ -4,20 +4,7 @@ import notFound from '../images/404.svg'
 import styled from 'styled-components'
 import CommonContext from '../utils/context'
 import { Link } from 'react-router-dom'
-
-const NotFoundContainer = styled.div`
-	font-family: ${props => props.theme.fontFamily};
-	height: 100%;
-	width: 100%;
-	background: url(${props => props.bgImg}) center center no-repeat;
-	background-size: contain;
-	display: flex;
-	justify-content: center;
-	margin-top: ${props => props.theme.spacing(15)};
-	@media(min-width: ${props => props.theme.smQuery}) {
-		background-size: cover;
-	}
-`
+import Container from '../components/Container'
 
 const NotFoundBody = styled.div`
 	display: flex;
@@ -25,7 +12,7 @@ const NotFoundBody = styled.div`
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	height: 70vh;
+	height: 80vh;
 `
 const Title = styled.h1`
 	font-size: 50px;
@@ -77,14 +64,14 @@ const NotFound = props => {
 	const { theme } = context;
 
 	return (
-		<NotFoundContainer bgImg={notFound} theme={theme}>
+		<Container withBg={true}>
 			<NotFoundBody>
 				<Title theme={theme}>404</Title>
 				<Divider theme={theme} />
 				<Subtitle theme={theme}>Page not found</Subtitle>
 				<Cta theme={theme} to="/">Return to homepage</Cta>
 			</NotFoundBody>
-		</NotFoundContainer>
+		</Container>
 	)
 }
 
