@@ -6,6 +6,8 @@ import ProductItem from '../components/ProductItem'
 import styled from 'styled-components'
 import Loader from '../components/Loader'
 import CommonContext from '../utils/context'
+import CustomBreadcrumb, { BreadcrumbItem } from '../components/Breadcrumb'
+import { Link } from 'react-router-dom'
 
 const Intro = styled.section``
 const PageTitle = styled.h1`
@@ -154,6 +156,10 @@ const Shop = props => {
 
     return (
         <Container withBg={true}>
+            <CustomBreadcrumb>
+                <BreadcrumbItem componentClass={Link} theme={theme} to="/">Home</BreadcrumbItem>
+                <BreadcrumbItem active theme={theme}>Shop</BreadcrumbItem>
+            </CustomBreadcrumb>
             <Intro>
                 <PageTitle theme={theme}>All products</PageTitle>
                 <Divider theme={theme} />
@@ -181,8 +187,6 @@ const Shop = props => {
     )
 }
 
-Shop.propTypes = {
-
-}
+Shop.propTypes = {}
 
 export default Shop

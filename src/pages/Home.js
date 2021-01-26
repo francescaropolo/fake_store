@@ -121,7 +121,7 @@ const Dot = styled.div`
 
 const Home = props => {
 	const context = useContext(CommonContext);
-	const { theme, cartItems, setCartItems, setShowCart } = context;
+	const { theme } = context;
 	const {state, set} = useMergeState({
 		isLoading: true,
 		trendingItems: [],
@@ -176,8 +176,6 @@ const Home = props => {
 	)
 }
 
-Home.propTypes = {
-
-}
+Home.propTypes = {}
 
 export default Home

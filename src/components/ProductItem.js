@@ -109,7 +109,7 @@ const CartButton = styled.button`
 const ProductItem = props => {
 	const context = useContext(CommonContext);
 	const { theme, cartItems, setCartItems, setShowCart } = context;
-	const { id, title, description, category, price, image } = props.product;
+	const { id, title, category, price, image } = props.product;
 
 	const handleAddItem = (ev) => {
 		ev.stopPropagation();
@@ -140,7 +140,7 @@ const ProductItem = props => {
 }
 
 ProductItem.propTypes = {
-
+	product: PropTypes.object.isRequired
 }
 
 export default ProductItem

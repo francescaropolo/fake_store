@@ -1,7 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Shop from './pages/Shop';
 import Product from './pages/Product';
 import Home from './pages/Home';
@@ -11,6 +10,7 @@ import Header from './components/Header';
 import 'rsuite/dist/styles/rsuite-default.css';
 import Footer from './components/Footer';
 import styled from 'styled-components';
+import ScrollToTop from './components/ScrollToTop';
 
 const Wrapper = styled.div`
 	display: flex;
@@ -23,6 +23,7 @@ function App() {
 	return (
 		<ProvideContext>
 			<Router>
+				<ScrollToTop />
 				<Wrapper>
 					<Header />
 					<Switch>

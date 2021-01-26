@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useMergeState } from 'react-hooks-lib'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Container from '../components/Container'
 import ProductItem from '../components/ProductItem'
 import Loader from '../components/Loader'
@@ -11,6 +11,7 @@ import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components'
 import CommonContext from '../utils/context'
 import { Input } from 'rsuite'
+import CustomBreadcrumb, { BreadcrumbItem } from '../components/Breadcrumb'
 
 const ProductContainer = styled.section`
 	padding-top: ${props => props.theme.spacing(4)};
@@ -159,6 +160,13 @@ const Text = styled.p`
 		font-weight: 600;
 	}
 `
+const LoaderContainer = styled.div`
+    height: 70vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 
 const Product = props => {
 	const context = useContext(CommonContext);
@@ -166,15 +174,18 @@ const Product = props => {
 	const { state, set } = useMergeState({
 		product: null,
 		isLoading: true,
+		isLoadingRelated: true,
 		error: null,
 		quantity: 1
 	})
 	const { id } = useParams();
 
 	useEffect(() => {
+		set({isLoading: true, isLoadingRelated: true})
 		setShowCart(false)
 		getProductInfo();
 	}, [id])
+	
 	useEffect(() => {
 		if(state.product) {
 			getRelatedItems();
@@ -187,11 +198,13 @@ const Product = props => {
 			.then(json => {
 				set({
 					product: json,
+					isLoading: false,
 				})
 			})
 			.catch(error => {
 				set({
 					error: error,
+					isLoading: false,
 				})
 			})
 	}
@@ -210,13 +223,13 @@ const Product = props => {
 				}
 				set({
 					relatedItems: json,
-					isLoading: false
+					isLoadingRelated: false
 				})
 			})
 			.catch(error => {
 				set({
 					error: error,
-					isLoading: false
+					isLoadingRelated: false
 				})
 			})
 	}
@@ -258,9 +271,13 @@ const Product = props => {
 
 	return (
 		<Container withBg={true}>
-			{state.isLoading ? <Loader /> :
+			<CustomBreadcrumb>
+				<BreadcrumbItem componentClass={Link} theme={theme} to="/">Home</BreadcrumbItem>
+				<BreadcrumbItem componentClass={Link} theme={theme} to="/shop">Shop</BreadcrumbItem>
+				<BreadcrumbItem active theme={theme}>{state.product ? state.product.title : '...'}</BreadcrumbItem>
+			</CustomBreadcrumb>
+			{state.isLoading ? <LoaderContainer><Loader /></LoaderContainer> :
 				<React.Fragment>
-
 					<ProductContainer theme={theme}>
 						<ProductImageContainer theme={theme}>
 							<Img src={state.product.image} />
@@ -289,7 +306,7 @@ const Product = props => {
 					<RelatedProducts>
 						<SectionTitle theme={theme}>Related products</SectionTitle>
 						<Divider theme={theme} />
-						{state.isLoading ? <Loader color="white" /> : <ProductsList theme={theme}>
+						{state.isLoadingRelated ? <Loader /> : <ProductsList theme={theme}>
 							{state.relatedItems.map((product, index) => {
 								return <ProductItem product={product} key={index} />
 							})}
@@ -301,8 +318,6 @@ const Product = props => {
 	)
 }
 
-Product.propTypes = {
-
-}
+Product.propTypes = {}
 
 export default Product

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import Container from '../components/Container'
 import notFound from '../images/404.svg'
 import styled from 'styled-components'
 import CommonContext from '../utils/context'
@@ -89,8 +88,6 @@ const NotFound = props => {
 	)
 }
 
-NotFound.propTypes = {
-
-}
+NotFound.propTypes = {}
 
 export default NotFound

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CommonContext from '../utils/context';
@@ -18,7 +18,7 @@ const Logo = styled(Link)`
 	margin-right: auto;
 	font-size: 1.2rem;
 	font-weight: 600;
-	&:hover {
+	&:hover, &:focus, &:active {
 		text-decoration: none;
 		color: ${props => props.theme.black};
 	}
@@ -155,7 +155,6 @@ const Text = styled.p`
 	font-size: 14px;
 	span {
 		color: ${props => props.theme.primary};
-		font-style: italic;
 		font-weight: 600;
 	}
 `
@@ -204,6 +203,9 @@ const ModalBody = styled(Modal.Body)`
 		font-size: 20px;
 	}
 `
+const CustomModal = styled(Modal)`
+	width: ${props => props.full ? '100%' : '600px'}
+`
 
 const Header = props => {
 	const context = useContext(CommonContext);
@@ -212,7 +214,7 @@ const Header = props => {
 		items: [],
 		total: 0,
 		showMenu: false,
-		isMobile: false,
+		isMobile: window.innerWidth <= 576,
 		openModal: false
 	})
 
@@ -277,6 +279,7 @@ const Header = props => {
 				show={showCart}
 				onHide={() => setShowCart(false)}
 				size="xs"
+				full={!window.matchMedia(`(min-width: ${theme.smQuery})`).matches}
 			>
 				<Drawer.Header>
 					<Drawer.Title>
@@ -310,20 +313,18 @@ const Header = props => {
 					</InfoContainer>}
 				</Drawer.Footer>
 			</Drawer>
-			<Modal show={state.openModal} onHide={() => set({openModal: false})}>
+			<CustomModal show={state.openModal} full={!window.matchMedia(`(min-width: ${theme.smQuery})`).matches} onHide={() => set({openModal: false})}>
 				<Modal.Header>
 					<Modal.Title><ModalTitle theme={theme}>That's all folks!</ModalTitle></Modal.Title>
 				</Modal.Header>
 				<ModalBody>
 					<Text theme={theme}>We hope you enjoyed your <span>Fake</span> shopping experience.</Text>
 				</ModalBody>
-			</Modal>
+			</CustomModal>
 		</AppBar>
 	)
 }
 
-Header.propTypes = {
-
-}
+Header.propTypes = {}
 
 export default Header

@@ -18,15 +18,20 @@ const Item = styled.li`
 	&:last-child {
 		border-bottom: 0;
 	}
-	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	@media(min-width: ${props => props.theme.smQuery}) {
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+	}
 `
 const LinkContainer = styled(Link)`
 	cursor: pointer;
 	text-decoration: none;
 	color: ${props => props.theme.black};
-	display: flex;
-	align-items: center;
-	justofy-content: flex-start;
+	
 	* {
 		text-decoration: none;
 	}
@@ -36,7 +41,7 @@ const LinkContainer = styled(Link)`
 	}
 `
 const ImgContainer = styled.div`
-	min-width: 150px;
+	min-width: 100px;
 	height: 100px;
 	overflow: hidden;
 	background: url(${props => props.bg}) 0 0 no-repeat;
@@ -52,13 +57,14 @@ const InfoContainer = styled.section`
 const Title = styled.h6`
 	font-size: 12px;
 	line-height: 12px;
-	margin: 0 0 ${props => props.theme.spacing(1)};
+	margin: 0 0;
 	padding-right: ${props => props.theme.spacing(1)};
 	color: ${props => props.theme.black};
+	text-transform: uppercase;
 	@media(min-width: ${props => props.theme.smQuery}) {
 		color: ${props => props.theme.black};
+		margin: 0 0 ${props => props.theme.spacing(1)};
 	}
-	text-transform: uppercase;
 	&:hover, &:focus, &:active {
 		text-decoration: none;
 		color: ${props => props.theme.black};
@@ -76,8 +82,11 @@ const Price = styled.span`
 const Divider = styled.div`
 	height: 2px;
 	width: 20px;
-	margin: ${props => props.theme.spacing(1)} 0 ${props => props.theme.spacing(6)};
-	background-color: ${props => props.theme.secondary}
+	margin: ${props => props.theme.spacing(1)} 0 ${props => props.theme.spacing(2)};
+	background-color: ${props => props.theme.secondary};
+	@media(min-width: ${props => props.theme.smQuery}) {
+		margin: ${props => props.theme.spacing(1)} 0 ${props => props.theme.spacing(6)};
+	}
 `
 const PriceContainer = styled.div`
 	display: flex;
@@ -124,7 +133,7 @@ const CloseButton = styled(QuantityButton)`
 const CartItem = props => {
 	const context = useContext(CommonContext);
 	const { theme, cartItems, setCartItems } = context;
-	const { id, title, description, category, price, image, quantity } = props.item;
+	const { id, title, price, image, quantity } = props.item;
 
 	const getShorterTitle = (str) => {
 		const strArr = str.split(" ");
@@ -163,26 +172,28 @@ const CartItem = props => {
 		<Item theme={theme}>
 			<LinkContainer to={"/shop/product/" + id}>
 				<ImgContainer bg={image} theme={theme}/>
-				<InfoContainer theme={theme}>
+			</LinkContainer>
+			<InfoContainer theme={theme}>
+				<LinkContainer to={"/shop/product/" + id}>
 					<Title theme={theme}>{getShorterTitle(title)}</Title>
 					<Divider theme={theme}/>
-					<PriceContainer>
-						<QuantityActions theme={theme}>
-							<QuantityButton theme={theme} onClick={handleRemove}><FontAwesomeIcon icon={faMinus} size="xs" /></QuantityButton>
-							<QuantityInput theme={theme} placeholder="Quantity" value={quantity} onChange={handleChangeQuantity} />
-							<QuantityButton theme={theme} onClick={handleAdd}><FontAwesomeIcon icon={faPlus} size="xs" /></QuantityButton>
-						</QuantityActions>
-						<Price theme={theme}>{price}€</Price>
-					</PriceContainer>
-				</InfoContainer>
-			</LinkContainer>
+				</LinkContainer>
+				<PriceContainer>
+					<QuantityActions theme={theme}>
+						<QuantityButton theme={theme} onClick={handleRemove}><FontAwesomeIcon icon={faMinus} size="xs" /></QuantityButton>
+						<QuantityInput theme={theme} placeholder="Quantity" value={quantity} onChange={handleChangeQuantity} />
+						<QuantityButton theme={theme} onClick={handleAdd}><FontAwesomeIcon icon={faPlus} size="xs" /></QuantityButton>
+					</QuantityActions>
+					<Price theme={theme}>{price}€</Price>
+				</PriceContainer>
+			</InfoContainer>
 			<CloseButton theme={theme} onClick={() => handleChangeQuantity(0)}><FontAwesomeIcon icon={faTimes} size="xs" /></CloseButton>
 		</Item>
 	)
 }
 
 CartItem.propTypes = {
-
+	item: PropTypes.object.isRequired
 }
 
 export default CartItem

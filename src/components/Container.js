@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import CommonContext, { theme } from '../utils/context';
+import CommonContext from '../utils/context';
 import bg from '../images/bg.svg'
 
 const PageContainer = styled.div`
